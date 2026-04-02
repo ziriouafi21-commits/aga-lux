@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AGA LUX — Premium Wooden Art</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Noto+Sans+Arabic:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=Noto+Sans+Arabic:wght@300;500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -16,10 +16,11 @@
             emerald:  { DEFAULT: '#043927', light: '#0a5c3d' },
             cream:    { DEFAULT: '#F9F7F2' },
             cedar:    { DEFAULT: '#7B4F2E' },
+            sand:     { DEFAULT: '#D4B896' },
           },
           fontFamily: {
             serif: ['"Playfair Display"', 'serif'],
-            sans:  ['"Noto Sans Arabic"', 'sans-serif'],
+            sans:  ['"Noto Sans Arabic"', '"DM Sans"', 'sans-serif'],
           },
         },
       },
@@ -27,78 +28,104 @@
   </script>
 
   <style>
-    body { background-color: #F9F7F2; color: #7B4F2E; }
-    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
+    html { scroll-behavior: smooth; }
+    body { background-color: #F9F7F2; color: #7B4F2E; font-family: "Noto Sans Arabic", sans-serif; }
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    .hero-gradient { background: linear-gradient(135deg, #c8854a 0%, #7B4F2E 100%); }
+    .hero-img-placeholder {
+      background: linear-gradient(135deg, #c8854a 0%, #7B4F2E 100%);
+      min-height: 500px;
+    }
   </style>
 </head>
 
-<body class="font-sans overflow-x-hidden">
+<body class="overflow-x-hidden">
 
-  <nav class="fixed top-0 w-full z-50 px-6 py-4 flex items-center justify-between bg-cream/90 backdrop-blur-md border-b border-emerald/5">
-    <a href="#" class="font-serif text-2xl font-bold tracking-tighter text-emerald">
+  <nav id="navbar" class="fixed top-0 w-full z-50 px-6 py-4 flex items-center justify-between bg-cream/90 backdrop-blur-md border-b border-emerald/5">
+    <a href="#" class="font-serif text-2xl font-bold text-emerald">
       AGA <span class="text-cedar">LUX</span>
     </a>
-    <div class="hidden md:flex gap-8 text-sm font-medium">
-      <a href="#features" class="hover:text-emerald transition-colors">إبداعنا</a>
-      <a href="#story" class="hover:text-emerald transition-colors">قصتنا</a>
-      <a href="https://wa.me/212600000000" class="bg-emerald text-cream px-6 py-2 rounded-sm">اطلب الآن</a>
+    
+    <div class="flex gap-4 text-xs font-bold uppercase tracking-widest">
+      <button onclick="changeLang('ar')" class="hover:text-emerald">AR</button>
+      <button onclick="changeLang('fr')" class="hover:text-emerald">FR</button>
+      <button onclick="changeLang('en')" class="hover:text-emerald">EN</button>
     </div>
+
+    <a href="https://wa.me/212600000000" class="bg-emerald text-cream px-5 py-2 rounded-sm text-sm">اطلب الآن</a>
   </nav>
 
   <section class="min-h-screen grid grid-cols-1 md:grid-cols-2">
-    <div class="flex flex-col justify-center px-8 md:px-16 pt-32 pb-10 text-right">
-      <div class="reveal mb-4 flex items-center gap-2 justify-end">
-        <span class="text-xs tracking-widest uppercase text-emerald font-bold">L'Art de la Table — AGA LUX</span>
-        <span class="w-8 h-px bg-emerald"></span>
-      </div>
-      
-      <h1 class="reveal font-serif text-5xl md:text-6xl text-emerald mb-6 leading-tight">
+    <div class="flex flex-col justify-center px-8 md:px-16 pt-32 pb-10 text-right" id="hero-content">
+      <h1 class="reveal font-serif text-5xl md:text-7xl text-emerald mb-6 leading-tight">
         فخامة الخشب <br/><span class="italic text-cedar">في مطبخك</span>
       </h1>
-      
-      <p class="reveal text-lg text-cedar-light mb-10 max-w-md ml-0 mr-auto leading-relaxed">
-        قطعة فنية من خشب الزيتون والعرعار المغربي الأصيل. تصميم يجمع بين الأصالة والحداثة (Modern Moroccan Luxury) ليرافقك مدى الحياة.
+      <p class="reveal text-lg text-cedar-light mb-10 max-w-md ml-0 mr-auto">
+        قطع فنية مصنوعة يدوياً من خشب الزيتون والعرعار المغربي الأصيل. جودة تدوم لأجيال.
       </p>
-
-      <div class="reveal flex flex-col sm:flex-row gap-4 justify-end">
-        <a href="https://wa.me/212600000000" class="bg-emerald text-cream px-10 py-4 text-center font-bold hover:bg-emerald-light transition-all">
-          اطلب الآن — Commander
-        </a>
-        <div class="flex items-center gap-2 text-sm text-emerald">
-          <span>الدفع عند الاستلام في جميع مدن المغرب</span>
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-        </div>
+      <div class="reveal flex gap-4 justify-end">
+        <a href="https://wa.me/212600000000" class="bg-cedar text-cream px-10 py-4 font-bold uppercase tracking-widest">تسوق الآن</a>
       </div>
     </div>
-
-    <div class="hero-gradient min-h-[400px] relative flex items-center justify-center">
-      <div class="text-cream text-center opacity-40">
-        <p class="font-serif text-2xl">AGA LUX Visual</p>
-        <p class="text-xs uppercase tracking-widest">Sunset Lighting / 3D Render</p>
-      </div>
+    <div class="hero-img-placeholder relative">
+        <div class="absolute inset-0 flex items-center justify-center text-cream/20 uppercase tracking-widest">AGA LUX Visual</div>
     </div>
   </section>
 
-  <footer class="bg-emerald text-cream/70 py-12 px-6 text-center">
-    <p class="font-serif text-3xl text-cream mb-4">AGA LUX</p>
-    <p class="text-sm mb-6">Artesanat de Luxe — Agadir, Maroc</p>
-    <div class="flex justify-center gap-6 mb-8">
-      <a href="#" class="hover:text-cream">Instagram</a>
-      <a href="#" class="hover:text-cream">Facebook</a>
+  <section id="features" class="py-24 px-6 md:px-24 bg-white">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div class="reveal text-center">
+            <h3 class="font-serif text-2xl mb-4">جودة يدوية</h3>
+            <p class="text-sm">كل قطعة منحوتة يدوياً بعناية فائقة لضمان التفرد.</p>
+        </div>
+        <div class="reveal text-center">
+            <h3 class="font-serif text-2xl mb-4">مواد طبيعية</h3>
+            <p class="text-sm">خشب زيتون وأرز مغربي أصلي 100%.</p>
+        </div>
+        <div class="reveal text-center">
+            <h3 class="font-serif text-2xl mb-4">دفع عند الاستلام</h3>
+            <p class="text-sm">خدمة التوصيل والدفع عند الاستلام في جميع المدن.</p>
+        </div>
     </div>
-    <p class="text-xs border-t border-cream/10 pt-6">© 2026 AGA LUX. صنع بكل إتقان في المغرب.</p>
+  </section>
+
+  <footer class="bg-emerald text-cream py-12 px-6 text-center">
+    <p class="font-serif text-2xl mb-4">AGA LUX</p>
+    <p class="text-xs opacity-60">© 2026 AGA LUX - Agadir, Morocco. Handcrafted Excellence.</p>
   </footer>
 
   <script>
+    // Reveal Animation
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  </script>
 
+    // Simple Language Switcher Logic
+    function changeLang(lang) {
+      const html = document.documentElement;
+      const heroH1 = document.querySelector('#hero-content h1');
+      const heroP = document.querySelector('#hero-content p');
+
+      if (lang === 'ar') {
+        html.dir = 'rtl';
+        html.lang = 'ar';
+        heroH1.innerHTML = 'فخامة الخشب <br/><span class="italic text-cedar">في مطبخك</span>';
+        heroP.innerText = 'قطع فنية مصنوعة يدوياً من خشب الزيتون والعرعار المغربي الأصيل. جودة تدوم لأجيال.';
+      } else if (lang === 'fr') {
+        html.dir = 'ltr';
+        html.lang = 'fr';
+        heroH1.innerHTML = 'L\'Art du Bois <br/><span class="italic text-cedar">dans votre Cuisine</span>';
+        heroP.innerText = 'Des pièces artisanales en bois d\'olivier et de cèdre marocain. Une qualité pour des générations.';
+      } else if (lang === 'en') {
+        html.dir = 'ltr';
+        html.lang = 'en';
+        heroH1.innerHTML = 'Wooden Luxury <br/><span class="italic text-cedar">in your Kitchen</span>';
+        heroP.innerText = 'Handcrafted pieces from authentic Moroccan Olive and Cedar wood. Quality that lasts generations.';
+      }
+    }
+  </script>
 </body>
 </html>
