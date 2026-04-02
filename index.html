@@ -1,258 +1,184 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<!--
-  ============================================================
-  WoodCraft Maroc — صفحة هبوط فاخرة لألواح التقطيع الخشبية
-  المصمم: مطور واجهة أمامية محترف
-  التقنيات: Tailwind CSS v3 + JavaScript نقي
-  الثيم: فخامة مغربية حديثة / تصميم بسيط
-  ============================================================
--->
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WoodCraft Maroc — ألواح تقطيع خشبية فاخرة</title>
-  <meta name="description" content="ألواح تقطيع خشبية فاخرة مصنوعة يدوياً من الزيتون والسنديان المغربي. توصيل مجاني - دفع عند الاستلام">
-
-  <!-- Preconnect للأداء -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <!-- الخطوط: Noto Sans Arabic + Playfair Display -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS مع إعدادات مخصصة -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            emerald:  { DEFAULT: '#043927', light: '#0a5c3d', dark: '#022518' },
-            cream:    { DEFAULT: '#F9F7F2', dark: '#EDE9DF' },
-            cedar:    { DEFAULT: '#7B4F2E', light: '#9B6B44', dark: '#5C3820' },
-            sand:     { DEFAULT: '#D4B896', light: '#E5CEB2' },
-          },
-          fontFamily: {
-            'arabic': ['"Noto Sans Arabic"', 'system-ui', 'sans-serif'],
-            serif: ['"Playfair Display"', 'Georgia', 'serif'],
-            sans:  ['"Noto Sans Arabic"', 'system-ui', 'sans-serif'],
-          },
-          backgroundImage: {
-            'wood-grain': "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E\")",
-          },
-          animation: {
-            'fade-up':   'fadeUp 0.8s ease forwards',
-            'fade-in':   'fadeIn 1s ease forwards',
-            'pulse-slow':'pulse 3s ease-in-out infinite',
-          },
-          keyframes: {
-            fadeUp:  { '0%': { opacity: '0', transform: 'translateY(28px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-            fadeIn:  { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-          },
-        },
-      },
-    };
-  </script>
-
-  <style>
-    /* إصلاحات RTL */
-    [dir="rtl"] * { text-align: right; }
-    [dir="rtl"] .text-left { text-align: right !important; }
-    [dir="rtl"] .flex-row-reverse { flex-direction: row !important; }
-    
-    /* إعدادات أساسية */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: "Noto Sans Arabic", sans-serif;
-      background-color: #F9F7F2;
-      color: #7B4F2E;
-      -webkit-font-smoothing: antialiased;
-      line-height: 1.7;
-    }
-
-    /* تأثير خشبي */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; pointer-events: none; z-index: 999;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-      opacity: 0.4;
-    }
-
-    /* ظهور تدريجي */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.75s ease, transform 0.75s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.22s; }
-    .reveal-delay-3 { transition-delay: 0.34s; }
-
-    /* صور بديلة */
-    .hero-img-placeholder {
-      background: linear-gradient(135deg, #c8854a 0%, #e8a96a 25%, #d4874b 50%, #a0522d 75%, #7B4F2E 100%);
-      position: relative; overflow: hidden;
-    }
-    .hero-img-placeholder::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 40% 60%, rgba(255,200,100,0.25) 0%, transparent 65%),
-                  linear-gradient(180deg, rgba(4,57,39,0.08) 0%, transparent 100%);
-    }
-
-    /* نمط مغربي */
-    .moroccan-pattern {
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23043927' fill-opacity='0.06'%3E%3Cpath d='M30 0l5 5-5 5-5-5 5-5zm0 50l5 5-5 5-5-5 5-5zM5 25l5 5-5 5-5-5 5-5zm50 0l5 5-5 5-5-5 5-5zM30 20l10 10-10 10-10-10 10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    /* بطاقات المعرض */
-    .gallery-tile { overflow: hidden; border-radius: 4px; position: relative; }
-    .gallery-tile::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, transparent 50%, rgba(4,57,39,0.35) 100%);
-    }
-    .gallery-tile:hover img { transform: scale(1.05); }
-    .gallery-tile img { transition: transform 0.6s ease; width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    /* صور SVG بديلة */
-    .img-warm-a { background: linear-gradient(135deg, #C8854A, #D4A07A); }
-    .img-warm-b { background: linear-gradient(135deg, #9B6B44, #C8854A); }
-    .img-warm-c { background: linear-gradient(135deg, #7B4F2E, #B07850); }
-    .img-warm-d { background: linear-gradient(135deg, #D4B896, #9B6B44); }
-    .img-warm-e { background: linear-gradient(135deg, #A07040, #D4A07A); }
-
-    /* خط سفلي أنيق */
-    .underline-cedar {
-      position: relative; display: inline-block;
-    }
-    .underline-cedar::after {
-      content: '';
-      position: absolute; bottom: -6px; right: 0;
-      width: 60%; height: 2px;
-      background: #7B4F2E;
-    }
-
-    /* فاصل */
-    .divider-ornament {
-      display: flex; align-items: center; gap: 1rem; color: #D4B896;
-    }
-    .divider-ornament::before, .divider-ornament::after {
-      content: ''; flex: 1; height: 1px; background: currentColor;
-    }
-
-    /* زر واتساب عائم */
-    #whatsapp-btn {
-      animation: float 3s ease-in-out infinite;
-      box-shadow: 0 8px 32px rgba(37,211,102,0.35);
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-6px); }
-    }
-
-    /* شريط التنقل اللاصق */
-    #navbar { transition: background 0.4s ease, box-shadow 0.4s ease; }
-    #navbar.scrolled {
-      background: rgba(249,247,242,0.96) !important;
-      box-shadow: 0 2px 24px rgba(4,57,39,0.08);
-      backdrop-filter: blur(12px);
-    }
-
-    /* تأثير hover لبطاقات المميزات */
-    .feature-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-    .feature-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(4,57,39,0.1);
-    }
-
-    /* شريط التمرير */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: #F9F7F2; }
-    ::-webkit-scrollbar-thumb { background: #D4B896; border-radius: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪵 WoodCraft Maroc - ألواح تقطيع خشبية فاخرة</title>
+    <meta name="description" content="ألواح تقطيع خشبية فاخرة مصنوعة يدوياً - دفع عند الاستلام - توصيل مجاني">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        body{font-family:'Noto Sans Arabic',sans-serif;background:linear-gradient(135deg,#f9f7f2 0%,#ede9df 100%)}
+        .wood-bg{background:linear-gradient(135deg,#8B4513 0%,#D2691E 50%,#A0522D 100%);position:relative;overflow:hidden}
+        .wood-bg::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:0.5}
+        .product-card{transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);transform:translateY(0)}
+        .product-card:hover{transform:translateY(-20px) scale(1.02);box-shadow:0 25px 50px rgba(0,0,0,0.25)}
+        .btn-whatsapp{background:#25D366!important;color:white!important;border:none!important}
+        .btn-whatsapp:hover{background:#128C7E!important}
+        .floating-whatsapp{position:fixed;bottom:20px;right:20px;z-index:1000;animation:float 3s ease-in-out infinite}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        .lang-switcher{position:fixed;top:20px;left:20px;z-index:1001;background:white;padding:10px;border-radius:50px;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+        .success-animation{animation:successPulse 0.6s ease-out}
+        @keyframes successPulse{0%{transform:scale(0.9);opacity:0}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+    </style>
 </head>
+<body class="bg-gradient-to-br from-amber-50 to-orange-50 min-h-screen">
 
-<body class="bg-cream text-cedar font-arabic overflow-x-hidden">
+<!-- مفتاح اللغة -->
+<div class="lang-switcher">
+    <select id="langSelect" class="bg-transparent border-none text-sm font-bold cursor-pointer" onchange="changeLanguage(this.value)">
+        <option value="ar">العربية</option>
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+    </select>
+</div>
 
-  <!-- الشريط التنقلي -->
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-4 flex items-center justify-between bg-transparent">
-    <!-- الشعار -->
-    <a href="#" class="font-serif text-xl tracking-wider text-cedar-dark">
-      <span class="font-light text-sm tracking-[0.3em] uppercase text-cedar-light">المغرب</span>
-      Wood<span class="text-emerald">Craft</span>
-    </a>
+<!-- الهيدر -->
+<header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-lg px-6 py-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-gradient-to-br from-amber-800 to-orange-800 rounded-2xl flex items-center justify-center">
+                <span class="text-2xl">🪵</span>
+            </div>
+            <div>
+                <h1 id="logo-ar" class="font-bold text-xl text-amber-900">WoodCraft</h1>
+                <p id="logo-sub-ar" class="text-xs text-amber-700 font-medium">المغرب</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <span id="phone-ar" class="text-sm font-bold text-amber-900 hover:text-amber-700 cursor-pointer">📱 تواصل</span>
+            <a href="https://wa.me/212600000000" class="btn-whatsapp px-6 py-2 rounded-xl text-white font-bold text-sm">اطلب واتساب</a>
+        </div>
+    </div>
+</header>
 
-    <!-- روابط التنقل -->
-    <ul class="hidden md:flex items-center gap-8 text-sm tracking-wide font-medium">
-      <li><a href="#features" class="hover:text-emerald transition-colors">الحرفة</a></li>
-      <li><a href="#story"    class="hover:text-emerald transition-colors">القصة</a></li>
-      <li><a href="#gallery"  class="hover:text-emerald transition-colors">المعرض</a></li>
-    </ul>
-
-    <!-- زر الطلب -->
-    <a href="https://wa.me/212600000000?text=مرحبا!%20أريد%20طلب%20لوح%20تقطيع%20خشبي" target="_blank"
-       class="hidden md:inline-flex items-center gap-2 bg-emerald text-cream px-5 py-2.5 text-sm font-medium tracking-wide rounded-sm hover:bg-emerald-light transition-colors">
-      اطلب الآن
-    </a>
-
-    <!-- قائمة الهاتف -->
-    <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 cursor-pointer" aria-label="القائمة">
-      <span class="block w-6 h-0.5 bg-cedar transition-all"></span>
-      <span class="block w-4 h-0.5 bg-cedar transition-all"></span>
-      <span class="block w-6 h-0.5 bg-cedar transition-all"></span>
-    </button>
-  </nav>
-
-  <!-- قائمة الهاتف -->
-  <div id="mobile-menu" class="fixed inset-0 z-40 bg-cream flex flex-col items-center justify-center gap-8 text-2xl font-serif text-cedar-dark translate-x-full transition-transform duration-500">
-    <button id="close-menu" class="absolute top-6 right-6 text-cedar text-3xl">✕</button>
-    <a href="#features" class="hover:text-emerald transition-colors" onclick="closeMobileMenu()">الحرفة</a>
-    <a href="#story"    class="hover:text-emerald transition-colors" onclick="closeMobileMenu()">القصة</a>
-    <a href="#gallery"  class="hover:text-emerald transition-colors" onclick="closeMobileMenu()">المعرض</a>
-    <a href="https://wa.me/212600000000" target="_blank"
-       class="mt-4 bg-emerald text-cream px-8 py-3 text-base tracking-widest rounded-sm">اطلب عبر واتساب</a>
-  </div>
-
-  <!-- القسم الأول - الهيرو -->
-  <section id="hero" class="min-h-screen grid grid-cols-1 md:grid-cols-2">
-
-    <!-- النص -->
-    <div class="flex flex-col justify-center px-8 md:px-16 lg:px-24 pt-32 pb-20 md:pt-0 moroccan-pattern">
-      <!-- العلامة -->
-      <div class="reveal flex items-center gap-3 mb-6 flex-row-reverse">
-        <span class="block w-10 h-px bg-emerald"></span>
-        <span class="text-xs tracking-[0.35em] uppercase text-emerald font-medium">صناعة مغربية يدوية</span>
-      </div>
-
-      <!-- العنوان الرئيسي -->
-      <h1 class="reveal reveal-delay-1 font-serif text-4xl sm:text-5xl lg:text-6xl leading-tight text-cedar-dark mb-6">
-        حيث تلتقي<br/>
-        <em class="text-emerald not-italic">الغابة بالمائدة</em>
-      </h1>
-
-      <!-- النص الفرعي -->
-      <p class="reveal reveal-delay-2 font-arabic text-base md:text-lg text-cedar-light leading-relaxed max-w-md mb-10">
-        ألواح تقطيع فاخرة منحوتة من خشب الزيتون والسنديان المتقادم. معالجة بزيت غذائي نقي — مصممة لتورث، لا تُستبدل.
-      </p>
-
-      <!-- أزرار الدعوة -->
-      <div class="reveal reveal-delay-3 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <a href="https://wa.me/212600000000?text=مرحبا!%20أريد%20طلب%20لوح%20تقطيع%20خشبي" target="_blank"
-           class="group inline-flex items-center gap-3 bg-cedar text-cream px-8 py-4 text-sm tracking-[0.15em] uppercase font-medium hover:bg-cedar-dark transition-all duration-300 rounded-sm">
-          تسوق الآن
-          <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
-          </svg>
-        </a>
-        <span class="flex items-center gap-2 text-sm text-cedar-light">
-          <svg class="w-4 h-4 text-emerald" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-          </svg>
-          دفع عند الاستلام - توصيل مجاني في المغرب
-        </span>
-      </div>
-
-      <!-- إحصائيات -->
-      <div class="reveal mt-14 pt-8 border-t border-sand/50 flex gap-10">
+<!-- الهيرو -->
+<section class="wood-bg text-white pt-32 pb-24 px-6 md:px-12">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <p class="font-serif text-3xl text-cedar-dark">200+</p>
-          <p class="text-xs tracking-wide text-cedar-light mt-0.5">م
+            <div class="inline-block bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-8">
+                <span id="hero-badge-ar" class="text-sm font-bold">صناعة مغربية يدوية 100%</span>
+            </div>
+            <h1 id="hero-title-ar" class="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                ألواح تقطيع<br>خشبية فاخرة
+            </h1>
+            <p id="hero-desc-ar" class="text-xl mb-12 leading-relaxed max-w-lg">
+                خشب زيتون وسنديان مغربي أصيل • دفع عند الاستلام • توصيل مجاني في المغرب
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="https://wa.me/212600000000?text=مرحبا!%20أريد%20طلب%20لوح%20تقطيع%20خشبي%20فاخر" class="bg-white text-amber-900 px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300">🛒 اطلب الآن</a>
+                <a href="#products" class="border-2 border-white text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white hover:text-amber-900 transition-all duration-300">المنتجات</a>
+            </div>
+        </div>
+        <div class="relative">
+            <div class="w-full h-96 bg-gradient-to-br from-amber-400 via-orange-300 to-amber-600 rounded-3xl shadow-2xl animate-pulse"></div>
+        </div>
+    </div>
+</section>
+
+<!-- المنتجات -->
+<section id="products" class="py-24 px-6 md:px-12 bg-gradient-to-b from-white to-amber-50">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-20">
+            <h2 id="products-title-ar" class="text-4xl md:text-5xl font-bold text-amber-900 mb-6">🏆 مجموعتنا الفاخرة</h2>
+            <p id="products-desc-ar" class="text-xl text-amber-700 max-w-2xl mx-auto">أجود أنواع الخشب المغربي - جودة عالمية بأسعار مغربية</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- منتج 1 -->
+            <div class="product-card bg-white rounded-3xl p-8 shadow-xl border border-amber-100 hover:shadow-2xl group">
+                <div class="w-full h-64 bg-gradient-to-br from-amber-300 to-orange-400 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-500"></div>
+                <div>
+                    <h3 id="prod1-name-ar" class="text-2xl font-bold text-amber-900 mb-3">لوح زيتون كبير</h3>
+                    <div class="text-3xl font-black text-amber-600 mb-6">199 درهم</div>
+                    <a href="https://wa.me/212600000000?text=مرحبا!%20أريد%20لوح%20الزيتون%20الكبير%20بـ199%20درهم" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-4 px-6 rounded-2xl font-bold text-lg block text-center hover:from-amber-600 hover:to-orange-600 transform hover:scale-105 transition-all duration-300">🛒 اطلب هذا</a>
+                </div>
+            </div>
+
+            <!-- منتج 2 -->
+            <div class="product-card bg-white rounded-3xl p-8 shadow-xl border border-amber-100 hover:shadow-2xl group">
+                <div class="w-full h-64 bg-gradient-to-br from-orange-400 to-amber-500 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-500"></div>
+                <div>
+                    <h3 id="prod2-name-ar" class="text-2xl font-bold text-amber-900 mb-3">لوح سنديان متوسط</h3>
+                    <div class="text-3xl font-black text-amber-600 mb-6">149 درهم</div>
+                    <a href="https://wa.me/212600000000?text=مرحبا!%20أريد%20لوح%20السنديان%20المتوسط%20بـ149%20درهم" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-4 px-6 rounded-2xl font-bold text-lg block text-center hover:from-amber-600 hover:to-orange-600 transform hover:scale-105 transition-all duration-300">🛒 اطلب هذا</a>
+                </div>
+            </div>
+
+            <!-- منتج 3 -->
+            <div class="product-card bg-white rounded-3xl p-8 shadow-xl border border-amber-100 hover:shadow-2xl group">
+                <div class="w-full h-64 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-500"></div>
+                <div>
+                    <h3 id="prod3-name-ar" class="text-2xl font-bold text-amber-900 mb-3">لوح أكاسيا صغير</h3>
+                    <div class="text-3xl font-black text-amber-600 mb-6">99 درهم</div>
+                    <a href="https://wa.me/212600000000?text=مرحبا!%20أريد%20لوح%20الأكاسيا%20الصغير%20بـ99%20درهم" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-4 px-6 rounded-2xl font-bold text-lg block text-center hover:from-amber-600 hover:to-orange-600 transform hover:scale-105 transition-all duration-300">🛒 اطلب هذا</a>
+                </div>
+            </div>
+
+            <!-- منتج 4 -->
+            <div class="product-card bg-white rounded-3xl p-8 shadow-xl border border-amber-100 hover:shadow-2xl group">
+                <div class="w-full h-64 bg-gradient-to-br from-brown-400 to-amber-600 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-500"></div>
+                <div>
+                    <h3 id="prod4-name-ar" class="text-2xl font-bold text-amber-900 mb-3">مجموعة هدايا فاخرة</h3>
+                    <div class="text-3xl font-black text-amber-600 mb-6">349 درهم</div>
+                    <a href="https://wa.me/212600000000?text=مرحبا!%20أريد%20المجموعة%20الفاخرة%20بـ349%20درهم" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-4 px-6 rounded-2xl font-bold text-lg block text-center hover:from-amber-600 hover:to-orange-600 transform hover:scale-105 transition-all duration-300">🛒 اطلب هذا</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- مميزات -->
+<section class="py-24 px-6 md:px-12 bg-gradient-to-t from-amber-100 to-white">
+    <div class="max-w-6xl mx-auto text-center">
+        <h2 id="features-title-ar" class="text-4xl md:text-5xl font-bold text-amber-900 mb-6">لماذا تختار WoodCraft؟</h2>
+        <div class="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto mt-20">
+            <div class="p-8 bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div class="w-20 h-20 bg-gradient-to-br from-emerald-400 to-green-500 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                    <span class="text-3xl">👨‍🔧</span>
+                </div>
+                <h3 id="feat1-ar" class="text-2xl font-bold text-amber-900 mb-4">صناعة يدوية</h3>
+                <p id="feat1-desc-ar" class="text-amber-700">كل لوحة مصنوعة يدوياً بواسطة حرفيين مغاربة</p>
+            </div>
+            <div class="p-8 bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                    <span class="text-3xl">🛡️️</span>
+                </div>
+                <h3 id="feat2-ar" class="text-2xl font-bold text-amber-900 mb-4">غذائي 100%</h3>
+                <p id="feat2-desc-ar" class="text-amber-700">زيوت غذائية نقية - آمن لكل أنواع الطعام</p>
+            </div>
+            <div class="p-8 bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                    <span class="text-3xl">🚚</span>
+                </div>
+                <h3 id="feat3-ar" class="text-2xl font-bold text-amber-900 mb-4">توصيل مجاني</h3>
+                <p id="feat3-desc-ar" class="text-amber-700">توصيل سريع في جميع أنحاء المغرب</p>
+            </div>
+            <div class="p-8 bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                    <span class="text-3xl">💰</span>
+                </div>
+                <h3 id="feat4-ar" class="text-2xl font-bold text-amber-900 mb-4">دفع عند الاستلام</h3>
+                <p id="feat4-desc-ar" class="text-amber-700">ادفع عندما يصل المنتج لباب منزلك</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- آراء العملاء -->
+<section class="py-24 px-6 md:px-12 bg-gradient-to-b from-orange-50 to-amber-100">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 id="testimonials-title-ar" class="text-4xl font-bold text-amber-900 mb-20">⭐ آراء عملائنا</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-10 rounded-3xl shadow-xl">
+                <div class="text-4xl mb-4">⭐⭐⭐⭐⭐</div>
+                <p id="review1-ar" class="text-lg text-amber-800 mb-6 italic">"أجمل شيء في مطبخي، يستاهل كل درهم"</p>
+                <p class="font-bold text-amber-900">نادية - الدار البيضاء</p>
+            </div>
+            <div class="bg-white p-10 rounded-3xl shadow-xl">
+                <div class="text-4xl mb-4">⭐⭐⭐⭐⭐</div>
+                <p id="review2-ar" class="text-lg text-amber-800 mb-6 italic">"وصل في نفس الأسبوع، تغليف رائع"</p>
+                <p class="font-bold text-amber-900">سارة - الرباط</p>
+            </div>
+            <div class="bg-white p-10 rounded-3xl shadow-xl">
+                <div class="text-4
